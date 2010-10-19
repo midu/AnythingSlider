@@ -40,7 +40,7 @@
 			// for wrap - get parent() then closest in case the ul has "anythingSlider" class
 			base.$wrapper = base.$el.parent().closest('div.anythingSlider').addClass('anythingSlider-' + base.options.theme);
 			base.$window = base.$el.closest('div.anythingWindow');
-			base.$controls = $('<div class="anythingControls"></div>').appendTo(base.$wrapper);
+			base.$controls = $('<div class="anythingControls"></div>').appendTo(base.options.appendControlsTo ? $(base.options.appendControlsTo) : base.$wrapper);
 			base.$items = base.$el.find('> li').addClass('panel');
 
 			// Set up a few defaults & get details
@@ -561,6 +561,7 @@
 		toggleArrows        : false,     // If true, side navigation arrows will slide out on hovering & hide @ other times
 		buildNavigation     : true,      // If true, builds a list of anchor links to link to each panel
 		toggleControls      : false,     // if true, slide in controls (navigation + play/stop button) on hover and slide change, hide @ other times
+		appendControlsTo    : null,      // A HTML element (jQuery Object, selector or HTMLNode) to which the controls will be appended if not null
 		navigationFormatter : null,      // Details at the top of the file on this use (advanced use)
 		forwardText         : "&raquo;", // Link text used to move the slider forward (hidden by CSS, replaced with arrow image)
 		backText            : "&laquo;", // Link text used to move the slider back (hidden by CSS, replace with arrow image)
@@ -572,8 +573,8 @@
 		resumeOnVideoEnd    : true,      // If true & the slideshow is active & a youtube video is playing, it will pause the autoplay until the video is complete
 		stopAtEnd           : false,     // If true & the slideshow is active, the slideshow will stop on the last page
 		playRtl             : false,     // If true, the slideshow will move right-to-left
-		startText           : "Start",   // Start button text
-		stopText            : "Stop",    // Stop button text
+		startText           : "Play",   // Start button text
+		stopText            : "Pause",    // Stop button text
 		delay               : 3000,      // How long between slideshow transitions in AutoPlay mode (in milliseconds)
 		animationTime       : 600,       // How long the slideshow transition takes (in milliseconds)
 		easing              : "swing",   // Anything other than "linear" or "swing" requires the easing plugin
