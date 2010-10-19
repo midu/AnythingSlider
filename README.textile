@@ -43,6 +43,7 @@ h2. Default Options
 	toggleArrows        : false,     // if true, side navigation arrows will slide out on hovering & hide @ other times
 	buildNavigation     : true,      // If true, builds a list of anchor links to link to each panel
 	toggleControls      : false,     // if true, slide in controls (navigation + play/stop button) on hover and slide change, hide @ other times
+	appendControlsTo    : null,      // A HTML element (jQuery Object, selector or HTMLNode) to which the controls will be appended if not null
 	navigationFormatter : null,      // Details at the top of the file on this use (advanced use)
 	forwardText         : "&raquo;", // Link text used to move the slider forward (hidden by CSS, replaced with arrow image)
 	backText            : "&laquo;", // Link text used to move the slider back (hidden by CSS, replace with arrow image)
