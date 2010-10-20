@@ -32,8 +32,11 @@
 		base.$el.data("AnythingSlider", base);
 
 		base.init = function(){
-
 			base.options = $.extend({}, $.anythingSlider.defaults, options);
+
+            if (base.options.onBeforeInitialize != null)
+		        base.$el.bind('before_initialize', base, base.options.onBeforeInitialize);
+            base.$el.trigger('before_initialize');
 
 			// Cache existing DOM elements for later
 			// base.$el = original ul
@@ -187,7 +190,10 @@
 					}
 				}
 			});
-
+			
+			if (base.options.onInitialized !== null)
+		        base.$el.bind('initialized', base, base.options.onInitialized);
+            base.$el.trigger('initialized');
 		};
 
 		// Creates the numbered navigation links
@@ -587,6 +593,8 @@
 		onSlideInit         : null,      // Callback when slide initiates, before control animation
 		onSlideBegin        : null,      // Callback before slide animates
 		onSlideComplete     : null,      // Callback when slide completes
+		onBeforeInitialize  : null,      // Callback before the plugin initializes
+		onInitialized       : null,      // Callback when the plugin finished initializing
 
 		// Interactivity
 		clickArrows         : "click",         // Event used to activate arrow functionality (e.g. "click" or "mouseenter")
