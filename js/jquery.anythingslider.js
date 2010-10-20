@@ -35,8 +35,8 @@
 			base.options = $.extend({}, $.anythingSlider.defaults, options);
 
             if ($.isFunction(base.options.onBeforeInitialize))
-		        base.$el.bind('before_initialize', base, base.options.onBeforeInitialize);
-            base.$el.trigger('before_initialize');
+		        base.$el.bind('before_initialize', base.options.onBeforeInitialize);
+            base.$el.trigger('before_initialize', base);
 
 			// Cache existing DOM elements for later
 			// base.$el = original ul
@@ -100,6 +100,16 @@
 				}
 			} // ***** End script removal consideration *****/
 
+            // Binds events
+            if ($.isFunction(base.options.onShowPause))     base.$el.bind('slideshow_pause', base.options.onShowPause);
+            if ($.isFunction(base.options.onShowUnpause))   base.$el.bind('slideshow_unpause', base.options.onShowUnpause);
+            if ($.isFunction(base.options.onInitialized))   base.$el.bind('initialized', base.options.onInitialized);
+            if ($.isFunction(base.options.onSlideInit))     base.$el.bind('slide_init', base.options.onSlideInit);
+            if ($.isFunction(base.options.onSlideBegin))     base.$el.bind('slide_begin', base.options.onSlideBegin);
+			if ($.isFunction(base.options.onSlideComplete)) base.$el.bind('slide_complete', base.options.onSlideComplete);
+			if ($.isFunction(base.options.onShowStop))      base.$el.bind('slideshow_stop', base.options.onShowStop);
+			if ($.isFunction(base.options.onShowStart))     base.$el.bind('slideshow_start', base.options.onShowStart);
+
 			// Set the dimensions
 			if (base.options.resizeContents) {
 				if (base.options.width) { base.$wrapper.add(base.$items).css('width', base.options.width); }
@@ -141,13 +151,11 @@
 				base.$wrapper.hover(function() {
 					if (base.playing) {
 						base.$el.trigger('slideshow_paused', base);
-						if ($.isFunction(base.options.onShowPause)) { base.options.onShowPause(base); }
 						base.clearTimer(true);
 					}
 				}, function() {
 					if (base.playing) {
 						base.$el.trigger('slideshow_unpaused', base);
-						if ($.isFunction(base.options.onShowUnpause)) { base.options.onShowUnpause(base); }
 						base.startStop(base.playing, true);
 					}
 				});
@@ -191,9 +199,7 @@
 				}
 			});
 			
-			if ($.isFunction(base.options.onInitialized))
-		        base.$el.bind('initialized', base, base.options.onInitialized);
-            base.$el.trigger('initialized');
+            base.$el.trigger('initialized', base);
 		};
 
 		// Creates the numbered navigation links
@@ -326,7 +332,6 @@
 			if (base.checkVideo(base.playing)) { return; }
 
 			base.$el.trigger('slide_init', base);
-			if ($.isFunction(base.options.onSlideInit)) { base.options.onSlideInit(base); }
 
 			base.slideControls(true, false);
 
@@ -339,8 +344,7 @@
 			// Stop the slider when we reach the last page, if the option stopAtEnd is set to true
 			if (!autoplay || (base.options.stopAtEnd && page == base.pages)) { base.startStop(false); }
 
-			base.$el.trigger('slide_begin', base);
-			if ($.isFunction(base.options.onSlideBegin)) { base.options.onSlideBegin(base); }
+			base.$el.trigger('slide_begin', [base, page]);
 
 			// resize slider if content size varies
 			if (!base.options.resizeContents) {
@@ -380,12 +384,10 @@
 				}
 			}
 
-			base.$el.trigger('slide_complete', base);
-			if ($.isFunction(base.options.onSlideComplete)) {
-				// Added setTimeout (zero time) to ensure animation is complete... for some reason this code:
-				// alert(base.$window.is(':animated')); // alerts true - http://dev.jquery.com/ticket/7156
-				setTimeout(function(){ base.options.onSlideComplete(base); }, 0);
-			}
+            // Added setTimeout (zero time) to ensure animation is complete... for some reason this code:
+			// alert(base.$window.is(':animated')); // alerts true - http://dev.jquery.com/ticket/7156
+			// TODO: make sure this work...
+			setTimeout(function(){ base.$el.trigger('slide_complete', base); }, 0);
 		};
 
 		base.setCurrentPage = function(page, move) {
@@ -481,7 +483,6 @@
 				window.clearInterval(base.timer); 
 				if (!paused) {
 					base.$el.trigger('slideshow_stop', base); 
-					if ($.isFunction(base.options.onShowStop)) { base.options.onShowStop(base); }
 				}
 			}
 		};
@@ -493,7 +494,6 @@
 
 			if (playing && !paused) {
 				base.$el.trigger('slideshow_start', base);
-				if ($.isFunction(base.options.onShowStart)) { base.options.onShowStart(base); }
 			}
 
 			// Update variable

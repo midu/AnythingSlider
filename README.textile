@@ -101,7 +101,8 @@ $('#slider1').data('AnythingSlider').goBack();         // go back one slide</pre
 h3. Extending - Event Hooks (callback functions)
 *Note: Changed bind function returned arguments to make more straightforward values available, see callback arguments below.*
 
-* <code>before_initialize</code> (<code>onSlideBegin</code>) - triggered right after creating the anythingSlider object. "Read note":"#note-before-init" 
+* <code>before_initialize</code> (<code>onBeforeInitialize</code>) - triggered right after creating the anythingSlider object. "Read note":"#note-before-init".
+* <code>initialized</code> (<code>onInitialized</code>) - triggered after creating the anythingSlider object.
 * <code>slide_complete</code> (<code>onSlideComplete</code>) - triggered after panel slide animation.
 * <code>slideshow_start</code> (<code>onShowStart</code>) - slideshow started.
 * <code>slideshow_stop</code> (<code>onShowStop</code>) - slideshow stopped.
