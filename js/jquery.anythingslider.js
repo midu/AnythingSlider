@@ -34,7 +34,7 @@
 		base.init = function(){
 			base.options = $.extend({}, $.anythingSlider.defaults, options);
 
-            if (base.options.onBeforeInitialize != null)
+            if ($.isFunction(base.options.onBeforeInitialize))
 		        base.$el.bind('before_initialize', base, base.options.onBeforeInitialize);
             base.$el.trigger('before_initialize');
 
@@ -191,7 +191,7 @@
 				}
 			});
 			
-			if (base.options.onInitialized !== null)
+			if ($.isFunction(base.options.onInitialized))
 		        base.$el.bind('initialized', base, base.options.onInitialized);
             base.$el.trigger('initialized');
 		};

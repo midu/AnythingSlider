@@ -69,6 +69,8 @@ h2. Default Options
 	onSlideInit         : null,      // Callback when slide initiates, before control animation
 	onSlideBegin        : null,      // Callback before slide animates
 	onSlideComplete     : null,      // Callback when slide completes
+	onBeforeInitialize  : null,      // Callback before the plugin initializes
+	onInitialized       : null,      // Callback when the plugin finished initializing
 
 	// Interactivity
 	clickArrows         : "click",         // Event used to activate arrow functionality (e.g. "click" or "mouseenter")
@@ -99,6 +101,8 @@ $('#slider1').data('AnythingSlider').goBack();         // go back one slide</pre
 h3. Extending - Event Hooks (callback functions)
 *Note: Changed bind function returned arguments to make more straightforward values available, see callback arguments below.*
 
+* <code>before_initialize</code> (<code>onSlideBegin</code>) - triggered right after creating the anythingSlider object. "Read note":"#note-before-init" 
+* <code>slide_complete</code> (<code>onSlideComplete</code>) - triggered after panel slide animation.
 * <code>slideshow_start</code> (<code>onShowStart</code>) - slideshow started.
 * <code>slideshow_stop</code> (<code>onShowStop</code>) - slideshow stopped.
 * <code>slideshow_paused</code> (<code>onShowPause</code>) - slideshow paused.
@@ -106,6 +110,7 @@ h3. Extending - Event Hooks (callback functions)
 * <code>slide_init</code> (<code>onSlideInit</code>) - triggered when panel slide is initialized (before controls animate).
 * <code>slide_begin</code> (<code>onSlideBegin</code>) - triggered before panel slide animation.
 * <code>slide_complete</code> (<code>onSlideComplete</code>) - triggered after panel slide animation.
+
 
 You can bind to any of the custom event triggers as follows (see this page source for another example):
 
@@ -136,6 +141,13 @@ Callback Arguments ( examples are if you use "slider" in the callback function, 
 * slider.hovered - Is true if the slider is currently being hovered.
 * slider.options.{name} - Access any of the options (e.g. slider.options.theme). Trying to set the options this way may break the slider.
 
+p(#note-on-before-init). Please note that at this point almost nothing has been set:
+# The <code>anythingSlider</code> object has been attached to the <code>ul</code>
+# The class <code>anythingBase</code> was added to the <code>ul</code>
+# The <code>ul</code> was wrapped in two <code>div</code>s (<code>div.anythingSlider div.anythingWindow</code>)
+
+That's it! If you want to use some anythingSlider functionalities, you probably want to wait for the initialization to be completed (and register to the event <code>initialized</code> or use the <code>onInitialized</code> option).
+
 h3. Formatting Navigation Text
  To use the <code>navigationFormatter</code> option, you must have a function that accepts two parameters, and returns a string of HTML text.
 
@@ -148,6 +160,12 @@ h3. Formatting Navigation Text
   return " Panel #" + index; // This would have each tab with the text 'Panel #X' where X = index
  }
 })</pre>
+
+h2. ToDo
+
+h3. Misc
+
+Bind the <code>on*</code> function to the corresponding events instead of calling them after triggering the event.
 
 h2. Changelog
 
